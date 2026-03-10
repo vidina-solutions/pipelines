@@ -1,13 +1,11 @@
-name: Mirror to GitLab
+name: Sync to GitLab
 
 on:
   push:
   workflow_dispatch:
-  schedule:
-    - cron: "0 3 * * 0"   # every Sunday 03:00 UTC
 
 jobs:
-  mirror:
+  sync:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,7 +13,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Mirror repository
+      - name: Push main branch to GitLab
         run: |
-          git remote add gitlab https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_TOKEN }}@gitlab.vidina.net/upstream/pipelines.git
-          git push --mirror gitlab
+          git remote add gitlab https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_TOKEN }}@gitlab.example.com/YOUR_NAMESPACE/YOUR_PROJECT.git
+          git push gitlab HEAD:main
